@@ -1,7 +1,6 @@
 package twoDimensionalGame;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -9,15 +8,18 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 
@@ -42,11 +44,13 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 	public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, tiledirt;
 	
 	private void playMusic(){
-		try{
-			AudioClip clip = Applet.newAudioClip(new URL("C:/Users/Eugene/workspace/Hackathon14/data/StayWithMe.wav"));
-			clip.play();
-		} catch (MalformedURLException murle){
-			System.out.println( murle.getMessage());
+		File music = new File ("../data/StayWithMe.wav");
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(music));
+			clip.start();
+		} catch(Exception e){
+			System.out.println(e.getMessage());
 		}
 	}
 	
