@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,6 +22,7 @@ import java.util.Vector;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JButton;
 
 
 
@@ -29,7 +31,6 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private MainCharacter robot;
-	private Penguin penguin1, penguin2;
 	private Image image, background, character, fireFlower, flame, beam_sword, rayGun, penguin;
 	private Graphics second;
 	private URL base;
@@ -43,11 +44,13 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 	private Vector<Integer> blockGenerator;
 	private Vector<Tile> tileVector;
 	private ArrayList<Penguin> pengus;
+	private String audioName;
 	
 	public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, tiledirt;
 	
 	private void playMusic(){
-		File music = new File ("../data/StayWithMe.wav");
+		this.add(new JButton("Hi"));
+		File music = new File (audioName);
 		try {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(music));
@@ -59,6 +62,23 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 	
 	private void parseFeatures(){
 		FileReader fr;
+		Scanner scann = new Scanner(System.in);
+		System.out.println("Give me a wav file.");
+		audioName = scann.nextLine();
+		String command = "C:\\Anaconda\\python.exe ..\\src\\FeatureExtractor.py " + audioName + " 0.205 ..\\data\\features.txt";
+		System.out.println("Working Directory = " +
+	              System.getProperty("user.dir"));
+		System.out.println(command);
+		try {
+			Process p = Runtime.getRuntime().exec(command);
+			System.out.println(p.waitFor());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			fr = new FileReader("../data/features.txt");
 			Scanner scan = new Scanner(fr);
@@ -158,9 +178,6 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
 		
-		
-		penguin1 = new Penguin(340, 360);
-		penguin2 = new Penguin(700, 360);
 		pengus = new ArrayList<Penguin>();
 		
 		
