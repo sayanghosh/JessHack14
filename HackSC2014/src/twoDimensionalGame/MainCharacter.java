@@ -10,7 +10,7 @@ public class MainCharacter {
 
 	final int JUMPSPEED = -10;
 	final int MOVESPEED = 1;
-	final int GROUND = 400;
+	final int GROUND = 420;
 	
 	private int centerX = 100;
 	private int centerY = GROUND;
@@ -47,16 +47,16 @@ public class MainCharacter {
 		
 		// Updates Y Position
 		centerY += speedY;
-		if (centerY + speedY >= 400) {
-			centerY = 400;
+		if (centerY + speedY >= 420) {
+			centerY = 420;
 		}
 
 		// Handles Jumping
 		if (jumped == true) {
 			speedY += 1;
 
-			if (centerY + speedY >= 400) {
-				centerY = 400;
+			if (centerY + speedY >= 420) {
+				centerY = 420;
 				speedY = 0;
 				jumped = false;
 			}
@@ -104,11 +104,9 @@ public class MainCharacter {
 	}
 
 	public void jump() {
-		if (jumped == false && centerY == 400) {
+		if (jumped == false && centerY == 420) {
 			speedY = JUMPSPEED;
 			jumped = true;
-			System.out.println(speedY);
-			System.out.println(centerY);
 		}
 
 

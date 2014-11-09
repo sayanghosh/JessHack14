@@ -81,6 +81,8 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 					blockGenerator.add(0);
 				}
 			}
+			scan.close();
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,8 +124,8 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		addKeyListener(this);
 		Frame frame = (Frame) this.getParent().getParent();
 		frame.setTitle("Wav Riderrr");
-		blockGenerator = new Vector();
-		tileVector = new Vector();
+		blockGenerator = new Vector<Integer>();
+		tileVector = new Vector<Tile>();
 		try {
 			base = getDocumentBase();
 		} catch (Exception e) {
@@ -221,14 +223,14 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		
 		g.drawImage(background, bg1.getBackgroundX(), bg1.getBackgroundY(), this);
 		g.drawImage(background, bg2.getBackgroundX(), bg2.getBackgroundY(), this);	
-		g.drawImage(character, robot.getCenterX() - 61, robot.getCenterY() - 63, this);
+		g.drawImage(character, robot.getCenterX() - 35, robot.getCenterY() - 53, this);
 		paintTiles(g);
 		
 		if(weaponChoice == 1) {
-			g.drawImage(fireFlower, robot.getCenterX() + 15, robot.getCenterY() - 35, this);
+			g.drawImage(fireFlower, robot.getCenterX() + 15, robot.getCenterY() - 30, this);
 
 			if(isFire) {				
-				g.drawImage(flame, robot.getCenterX() + 20, robot.getCenterY() - 58, this);
+				g.drawImage(flame, robot.getCenterX() + 25, robot.getCenterY() - 60, this);
 			}
 		}
 		else if(weaponChoice == 2) {
@@ -255,14 +257,8 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 
 		switch (e.getKeyCode()) {
 
-		case KeyEvent.VK_LEFT:
-			robot.moveLeft();
-			break;
-
-		case KeyEvent.VK_RIGHT:
-
 		case KeyEvent.VK_SPACE:
-			System.out.println("Jump");
+			// System.out.println("Jump");
 			robot.jump();
 			robot.update();
 			System.out.println(robot.getCenterY());
@@ -312,10 +308,6 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-
-		case KeyEvent.VK_LEFT:
-
-		case KeyEvent.VK_RIGHT:
 			
 		case KeyEvent.VK_SPACE:
 			robot.setJumped(true);
