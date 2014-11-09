@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +29,8 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private MainCharacter robot;
-	private Image image, background, character, fireFlower, flame, beam_sword, rayGun;
+	private Penguin penguin1, penguin2;
+	private Image image, background, character, fireFlower, flame, beam_sword, rayGun, penguin;
 	private Graphics second;
 	private URL base;
 	private boolean isFire = false;
@@ -40,6 +42,7 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 
 	private Vector<Integer> blockGenerator;
 	private Vector<Tile> tileVector;
+	private ArrayList<Penguin> pengus;
 	
 	public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, tiledirt;
 	
@@ -140,6 +143,7 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		beam_sword = getImage(base, "../data/beam_sword.png");
 		flame = getImage(base, "../data/flame.png");
 		rayGun = getImage(base, "../data/rayGun.png");
+		penguin = getImage(base, "../data/ghost.png");
 		
 		//Tile Image Setups
 		tiledirt = getImage(base, "../data/tiledirt.png");
@@ -154,8 +158,20 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
 		
+		
+		penguin1 = new Penguin(340, 360);
+		penguin2 = new Penguin(700, 360);
+		pengus = new ArrayList<Penguin>();
+		
+		
+		for(int i = 1; i < 10; i++) {
+			Random generator = new Random();
+			int random = generator.nextInt(500);
+			Penguin tempPenguin = new Penguin((random*i), 360);
+			pengus.add(tempPenguin); 
+		}
+		
 		robot = new MainCharacter();
-
 
 		parseFeatures();
 		loadMap();
@@ -180,6 +196,10 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		while (true) {
 			robot.moveRight();
 			robot.update();
+			for(int i = 0; i < pengus.size(); i++) {
+				Penguin temp = pengus.get(i);
+				temp.update();
+			}
 			bg1.update();
 			bg2.update();
 			repaint();
@@ -224,6 +244,11 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 		g.drawImage(background, bg1.getBackgroundX(), bg1.getBackgroundY(), this);
 		g.drawImage(background, bg2.getBackgroundX(), bg2.getBackgroundY(), this);	
 		g.drawImage(character, robot.getCenterX() - 35, robot.getCenterY() - 53, this);
+		
+		for(int i = 0; i < pengus.size(); i++) {
+			Penguin temp = pengus.get(i);
+			g.drawImage(penguin, temp.getCenterX(), temp.getCenterY() - 60, this);
+		}
 		paintTiles(g);
 		
 		if(weaponChoice == 1) {
@@ -261,7 +286,7 @@ public class MainFrame extends Applet implements Runnable, KeyListener {
 			// System.out.println("Jump");
 			robot.jump();
 			robot.update();
-			System.out.println(robot.getCenterY());
+			// System.out.println(robot.getCenterY());
 			if(robot.getCenterY() <= 120) {
 				isTop = true;
 			}
